@@ -7,7 +7,9 @@
     <script>
         angular.module("graphApp",[])
         .controller("graphCtrl",function($scope){
-
+            $scope.getUrl = function(){
+                //console.log($scope.urlg)
+            }
         })
     </script>
 
@@ -31,8 +33,11 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <form name="graphurl" class="form-inline" novalidate>
-                <input name="urlg" class="form-control" placeholder="url de la medición" ng-model="urlg" required style="width:100%"/>
+                <input name="urlg" class="form-control" placeholder="url de la medición" ng-model="urlg" required style="width:100%" />
                 <span class="error" ng-show="graphurl.urlg.$error.required">Ingrese Url</span>
+                <button class="btn btn-default btn-xs" type="button" ng-hide="graphurl.urlg.$error.required" style="margin:10px" ng-click="getUrl()">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> graficar umbrales
+				</button>
             </form>
         </div>
     </div>
