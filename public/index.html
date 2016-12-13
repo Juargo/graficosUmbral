@@ -1,0 +1,41 @@
+<html ng-app="graphApp">
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.0/angular.min.js"></script>
+    <script>
+        angular.module("graphApp",[])
+        .controller("graphCtrl",function($scope){
+
+        })
+    </script>
+
+    <style>
+        .ng-invalid {
+            background-color: rgba(239, 195, 194, 0.48);
+        }
+        
+        .ng-valid {
+            background-color: lightgreen;
+        }
+        
+        span.error {
+            color: #d07474;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body ng-controller="graphCtrl">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <form name="graphurl" class="form-inline" novalidate>
+                <input name="urlg" class="form-control" placeholder="url de la medición" ng-model="urlg" required style="width:100%"/>
+                <span class="error" ng-show="graphurl.urlg.$error.required">Ingrese Url</span>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
