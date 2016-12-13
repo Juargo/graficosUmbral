@@ -22,7 +22,6 @@ app.get('/api/getdata', function (req, res) {
         ]);
 
     child.stdout.on('data', function (data) {
-        //res.json(data)
-        console.log(data);
+        res.json(data)
     });
 });
