@@ -18,11 +18,66 @@
     <script>
         angular.module("graphApp",[])
         .controller("graphCtrl",function($scope){
-            $scope.getUrl = function(){
+            $scope.dias = [
+                            {   
+                                fi :"05",
+                                ff: "06",
+                                clas : "active",
+                                nombre: "lunes"
+                            },
+                            {
+                                fi :"06",
+                                ff: "07",
+                                clas : "",
+                                nombre: "Martes"
+                            },
+                            {
+                                fi :"07",
+                                ff: "08",
+                                clas : "",
+                                nombre: "Miércoles"
+                            },
+                            {
+                                fi :"08",
+                                ff: "09",
+                                clas : "",
+                                nombre: "Jueves"
+                            },
+                            {
+                                fi :"09",
+                                ff: "10",
+                                clas : "",
+                                nombre: "Viernes"
+                            },
+                            {
+                                fi :"10",
+                                ff: "11",
+                                clas : "",
+                                nombre: "Sabado"
+                            },
+                            {
+                                fi :"11",
+                                ff: "12",
+                                clas : "",
+                                nombre: "Domingo"
+                            }];
+
+            $scope.tabactive = function (indi){
+                
+                for(i=0;i<$scope.dias.length;i++){
+                    $scope.dias[i].clas="";
+                }
+                $scope.dias[indi].clas ="active";
+
+                plot1.destroy();
+                $scope.getUrl($scope.dias[indi].fi,$scope.dias[indi].ff)
+            }
+
+            $scope.getUrl = function(fi,ff){
                 var puntosn=[];
                 var pw1=[];
                 var pw2=[];
-                $.get("http://localhost:3000/api/getData?target=" + $scope.urlg,function( data ) {
+                $.get("http://localhost:3000/api/getData?target=" + $scope.urlg + "&fi=" + fi + "&ff=" + ff,function( data ) {
                     data = JSON.parse(data);
                     puntos = data[0].datapoints;
                     cantidad = puntos.length;
@@ -41,7 +96,6 @@
                    
                         pw1.push([tt,puntos[i][0]+320]);
                     }
-                    console.log(puntosn)
                     $.jqplot.config.enablePlugins = true;
                     data = [puntosn,pw1,pw2] ;
 
@@ -65,6 +119,7 @@
                             useAxesFormatters:false
                         }
                     })
+                    console.log(plot1)
                 })
             }
         })
@@ -92,16 +147,20 @@
             <form name="graphurl" class="form-inline" novalidate>
                 <input name="urlg" class="form-control" placeholder="url de la medición" ng-model="urlg" required style="width:100%" />
                 <span class="error" ng-show="graphurl.urlg.$error.required">Ingrese Url</span>
-                <button class="btn btn-default btn-xs" type="button" ng-hide="graphurl.urlg.$error.required" style="margin:10px" ng-click="getUrl()">
+                <button class="btn btn-default btn-xs" type="button" ng-hide="graphurl.urlg.$error.required" style="margin:10px" ng-click="getUrl('05','06')">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> graficar umbrales
 				</button>
             </form>
         </div>
         <div class="panel-body">
-            <div id="myChart" style="height:400p;width:1900px">
-
-            </div>
+            <ul class="nav nav-tabs">
+                <li ng-repeat="(key,value) in dias" class="{{value.clas}}"><a href="#{{value.nombre}}" ng-click="tabactive(key)">{{value.nombre}}</a></li>
+            </ul>
+            <div id="myChart" style="height:400p;width:1900px"></div>
         </div>
+    </div>
+
+    
 </body>
 
 </html>
