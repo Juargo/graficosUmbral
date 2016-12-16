@@ -16,7 +16,23 @@
     <link rel="stylesheet" type="text/css" href="/src/jquery.jqplot.css" />
 
     <script>
+        $( "#selectt" ).change(function() {
+        console.log("chupa");
+        });
         angular.module("graphApp",[])
+        .controller("triggerCtrl",function ($scope,$compile) { 
+                $scope.triggerselect = null;
+                $("#selectt").append("<option value='' selected='selected'>Seleciona un trigger Moira</option>");
+                $.get("http://localhost:3000/api/gettriggers", function (datat) {  
+                    datat = JSON.parse(datat);
+                     for (i in datat) {
+                         var options = "<option value='"+i+"' >"+ i+ "</option>"
+                         $("#selectt").append($compile(options)($scope));
+                         var formulas = "<div id='"+i+"' style='display: none;' >"+datat[i]+"</div>";
+                         $("#selectt").after($compile(formulas)($scope));
+                     }
+                });
+        })
         .controller("graphCtrl",function($scope){
             $scope.dias = [
                             {   
@@ -91,10 +107,10 @@
                         if(ptos_c < 10){
                             pw2.push([tt,0]);
                         }else{
-                            pw2.push([tt,ptos_c-320]);
+                            pw2.push([tt,ptos_c*1.2]);
                         }
                    
-                        pw1.push([tt,puntos[i][0]+320]);
+                        pw1.push([tt,puntos[i][0]*0.8]);
                     }
                     $.jqplot.config.enablePlugins = true;
                     data = [puntosn,pw1,pw2] ;
@@ -119,7 +135,6 @@
                             useAxesFormatters:false
                         }
                     })
-                    console.log(plot1)
                 })
             }
         })
@@ -142,6 +157,13 @@
 </head>
 
 <body ng-controller="graphCtrl">
+    <div class="panel panel-default" ng-controller="triggerCtrl">
+        <div class="panel-heading">
+            <select class="form-control input-sm" id="selectt" >
+                
+            </select>
+        </div>
+    </div>
     <div class="panel panel-default">
         <div class="panel-heading">
             <form name="graphurl" class="form-inline" novalidate>

@@ -27,3 +27,10 @@ app.get('/api/getdata', function (req, res) {
         res.json(data)
     });
 });
+
+app.get('/api/gettriggers',function(req,res){
+    var childt = require('child_process').execFile('public/bashtrigger.sh',[]);
+    childt.stdout.on('data',function (data) { 
+        res.json(data)
+     })
+})
